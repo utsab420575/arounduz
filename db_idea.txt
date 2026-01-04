@@ -1,0 +1,625 @@
+users
+- id
+- name
+- email
+- email_verified_at
+- password
+- phone
+- avatar
+- role (enum: user, guide, agency, admin)
+- status (enum: active, inactive, suspended)
+- remember_token
+- created_at
+- updated_at
+
+guides
+- id
+- user_id
+- title
+- tagline
+- location
+- address
+- rating
+- reviews_count
+- tours_completed
+- experience_years
+- hourly_rate
+- daily_rate
+- description
+- license_number
+- verified
+- available
+- status (enum: online, busy, offline)
+- cover_image
+- created_at
+- updated_at
+
+guide_languages
+- id
+- guide_id
+- language
+- created_at
+- updated_at
+
+guide_specializations
+- id
+- guide_id
+- specialization
+- created_at
+- updated_at
+
+guide_certifications
+- id
+- guide_id
+- certification_name
+- certification_date
+- expiry_date
+- created_at
+- updated_at
+
+agencies
+- id
+- user_id
+- name
+- tagline
+- type
+- established
+- location
+- address
+- rating
+- reviews_count
+- tours_completed
+- phone
+- email
+- website
+- telegram
+- whatsapp
+- description
+- license_number
+- verified
+- status (enum: online, busy, offline)
+- logo
+- cover_image
+- created_at
+- updated_at
+
+agency_languages
+- id
+- agency_id
+- language
+- created_at
+- updated_at
+
+agency_specializations
+- id
+- agency_id
+- specialization
+- created_at
+- updated_at
+
+agency_team_members
+- id
+- agency_id
+- name
+- role
+- avatar
+- bio
+- created_at
+- updated_at
+
+tour_packages
+- id
+- agency_id
+- title
+- description
+- duration
+- price
+- group_size
+- difficulty_level
+- includes
+- excludes
+- itinerary
+- status (enum: active, inactive)
+- created_at
+- updated_at
+
+bookings
+- id
+- user_id
+- bookable_type (guide/agency)
+- bookable_id
+- tour_date
+- start_time
+- duration
+- num_people
+- service_type
+- special_requests
+- total_price
+- status (enum: pending, confirmed, cancelled, completed)
+- payment_status (enum: pending, paid, refunded)
+- created_at
+- updated_at
+
+reviews
+- id
+- user_id
+- reviewable_type (guide/agency)
+- reviewable_id
+- booking_id
+- rating
+- title
+- review
+- tour_type
+- helpful_count
+- status (enum: pending, approved, rejected)
+- created_at
+- updated_at
+
+review_images
+- id
+- review_id
+- image_path
+- created_at
+- updated_at
+
+favorites
+- id
+- user_id
+- favoritable_type (guide/agency)
+- favoritable_id
+- created_at
+- updated_at
+
+gallery_images
+- id
+- imageable_type (guide/agency)
+- imageable_id
+- image_path
+- title
+- order
+- created_at
+- updated_at
+
+itineraries
+- id
+- guide_id
+- title
+- duration
+- price
+- group_size
+- recommended_for
+- created_at
+- updated_at
+
+itinerary_stops
+- id
+- itinerary_id
+- stop_name
+- duration
+- order
+- created_at
+- updated_at
+
+itinerary_includes
+- id
+- itinerary_id
+- item
+- created_at
+- updated_at
+
+availability
+- id
+- available_type (guide/agency)
+- available_id
+- date
+- status (enum: available, limited, booked, unavailable)
+- slots_total
+- slots_booked
+- created_at
+- updated_at
+
+messages
+- id
+- sender_id
+- receiver_id
+- booking_id
+- message
+- read_at
+- created_at
+- updated_at
+
+notifications
+- id
+- user_id
+- type
+- data
+- read_at
+- created_at
+- updated_at
+
+destinations
+- id
+- name
+- slug
+- tagline
+- description
+- image
+- guides_count
+- tours_count
+- featured
+- order
+- created_at
+- updated_at
+
+destination_highlights
+- id
+- destination_id
+- highlight
+- created_at
+- updated_at
+
+newsletter_subscribers
+- id
+- email
+- status (enum: active, unsubscribed)
+- subscribed_at
+- unsubscribed_at
+- created_at
+- updated_at
+
+contact_messages
+- id
+- first_name
+- last_name
+- email
+- phone
+- subject
+- message
+- status (enum: new, in_progress, resolved)
+- created_at
+- updated_at
+
+settings
+- id
+- key
+- value
+- created_at
+- updated_at
+
+subscription_plans
+- id
+- name
+- slug
+- type (enum: contact_views, weekly, monthly, yearly)
+- price
+- currency
+- views_limit
+- duration_days
+- features
+- is_active
+- order
+- created_at
+- updated_at
+
+user_subscriptions
+- id
+- user_id
+- subscription_plan_id
+- starts_at
+- expires_at
+- views_remaining
+- views_used
+- status (enum: active, expired, cancelled)
+- payment_id
+- created_at
+- updated_at
+
+contact_views
+- id
+- user_id
+- user_subscription_id
+- viewable_type (guide/agency)
+- viewable_id
+- viewed_at
+- created_at
+- updated_at
+
+boost_plans
+- id
+- name
+- slug
+- type (enum: vip, featured, sponsor, top_search)
+- price
+- currency
+- duration_days
+- position_priority
+- features
+- is_active
+- order
+- created_at
+- updated_at
+
+profile_boosts
+- id
+- boostable_type (guide/agency)
+- boostable_id
+- boost_plan_id
+- starts_at
+- expires_at
+- status (enum: active, expired, cancelled)
+- payment_id
+- views_count
+- clicks_count
+- created_at
+- updated_at
+
+training_courses
+- id
+- title
+- slug
+- description
+- category (enum: guide_certification, first_aid, language, hospitality, safety, marketing)
+- level (enum: beginner, intermediate, advanced)
+- duration_hours
+- price
+- currency
+- instructor_name
+- instructor_bio
+- image
+- video_url
+- is_active
+- is_certified
+- certificate_name
+- views_count
+- enrollments_count
+- rating
+- created_at
+- updated_at
+
+course_modules
+- id
+- training_course_id
+- title
+- description
+- order
+- duration_minutes
+- created_at
+- updated_at
+
+course_lessons
+- id
+- course_module_id
+- title
+- description
+- content
+- video_url
+- attachments
+- order
+- duration_minutes
+- is_free
+- created_at
+- updated_at
+
+course_enrollments
+- id
+- user_id
+- training_course_id
+- payment_id
+- enrolled_at
+- started_at
+- completed_at
+- progress_percentage
+- status (enum: enrolled, in_progress, completed, cancelled)
+- certificate_issued
+- certificate_number
+- certificate_issued_at
+- created_at
+- updated_at
+
+lesson_progress
+- id
+- course_enrollment_id
+- course_lesson_id
+- status (enum: not_started, in_progress, completed)
+- completed_at
+- time_spent_minutes
+- created_at
+- updated_at
+
+course_certificates
+- id
+- course_enrollment_id
+- user_id
+- training_course_id
+- certificate_number
+- certificate_name
+- issued_at
+- expires_at
+- certificate_file
+- verification_code
+- created_at
+- updated_at
+
+course_reviews
+- id
+- user_id
+- training_course_id
+- course_enrollment_id
+- rating
+- review
+- helpful_count
+- status (enum: pending, approved, rejected)
+- created_at
+- updated_at
+
+payments
+- id
+- user_id
+- payable_type (subscription/boost/course)
+- payable_id
+- amount
+- currency
+- payment_method (enum: card, bank_transfer, paypal, stripe)
+- transaction_id
+- payment_gateway
+- status (enum: pending, completed, failed, refunded)
+- paid_at
+- refunded_at
+- refund_amount
+- refund_reason
+- metadata
+- created_at
+- updated_at
+
+payment_cards
+- id
+- user_id
+- card_brand
+- card_last_four
+- card_token
+- is_default
+- expires_at
+- created_at
+- updated_at
+
+invoices
+- id
+- user_id
+- payment_id
+- invoice_number
+- amount
+- currency
+- tax_amount
+- total_amount
+- status (enum: draft, sent, paid, cancelled)
+- issued_at
+- due_at
+- paid_at
+- created_at
+- updated_at
+
+subscription_features
+- id
+- subscription_plan_id
+- feature
+- created_at
+- updated_at
+
+boost_features
+- id
+- boost_plan_id
+- feature
+- created_at
+- updated_at
+
+user_achievements
+- id
+- user_id
+- achievement_type (enum: tours_completed, rating_milestone, certification_earned, training_completed)
+- achievement_name
+- achievement_description
+- badge_icon
+- earned_at
+- created_at
+- updated_at
+
+referrals
+- id
+- referrer_id
+- referred_id
+- referral_code
+- status (enum: pending, completed, rewarded)
+- reward_type (enum: discount, free_views, free_boost)
+- reward_value
+- completed_at
+- rewarded_at
+- created_at
+- updated_at
+
+coupons
+- id
+- code
+- type (enum: percentage, fixed_amount, free_views)
+- value
+- applicable_to (enum: all, subscriptions, boosts, courses)
+- minimum_purchase
+- usage_limit
+- used_count
+- starts_at
+- expires_at
+- is_active
+- created_at
+- updated_at
+
+coupon_usages
+- id
+- coupon_id
+- user_id
+- payment_id
+- discount_amount
+- used_at
+- created_at
+- updated_at
+
+activity_logs
+- id
+- user_id
+- action (enum: profile_view, contact_view, booking_created, subscription_purchased, course_enrolled)
+- loggable_type
+- loggable_id
+- ip_address
+- user_agent
+- metadata
+- created_at
+- updated_at
+
+
+
+php artisan make:migration create_users_table
+php artisan make:migration create_guides_table
+php artisan make:migration create_guide_languages_table
+php artisan make:migration create_guide_specializations_table
+php artisan make:migration create_guide_certifications_table
+php artisan make:migration create_agencies_table
+php artisan make:migration create_agency_languages_table
+php artisan make:migration create_agency_specializations_table
+php artisan make:migration create_agency_team_members_table
+php artisan make:migration create_tour_packages_table
+php artisan make:migration create_bookings_table
+php artisan make:migration create_reviews_table
+php artisan make:migration create_review_images_table
+php artisan make:migration create_favorites_table
+php artisan make:migration create_gallery_images_table
+php artisan make:migration create_itineraries_table
+php artisan make:migration create_itinerary_stops_table
+php artisan make:migration create_itinerary_includes_table
+php artisan make:migration create_availability_table
+php artisan make:migration create_messages_table
+php artisan make:migration create_notifications_table
+php artisan make:migration create_destinations_table
+php artisan make:migration create_destination_highlights_table
+php artisan make:migration create_newsletter_subscribers_table
+php artisan make:migration create_contact_messages_table
+php artisan make:migration create_settings_table
+php artisan make:migration create_subscription_plans_table
+php artisan make:migration create_user_subscriptions_table
+php artisan make:migration create_contact_views_table
+php artisan make:migration create_boost_plans_table
+php artisan make:migration create_profile_boosts_table
+php artisan make:migration create_training_courses_table
+php artisan make:migration create_course_modules_table
+php artisan make:migration create_course_lessons_table
+php artisan make:migration create_course_enrollments_table
+php artisan make:migration create_lesson_progress_table
+php artisan make:migration create_course_certificates_table
+php artisan make:migration create_course_reviews_table
+php artisan make:migration create_payments_table
+php artisan make:migration create_payment_cards_table
+php artisan make:migration create_invoices_table
+php artisan make:migration create_subscription_features_table
+php artisan make:migration create_boost_features_table
+php artisan make:migration create_user_achievements_table
+php artisan make:migration create_referrals_table
+php artisan make:migration create_coupons_table
+php artisan make:migration create_coupon_usages_table
+php artisan make:migration create_activity_logs_table

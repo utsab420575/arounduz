@@ -1,0 +1,2367 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Achievement extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+        'badge_icon',
+        'type',
+        'requirement_value',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
+    public function userAchievements()
+    {
+        return $this->hasMany(UserAchievement::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ActivityLog extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'action',
+        'loggable_type',
+        'loggable_id',
+        'ip_address',
+        'user_agent',
+        'metadata',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function loggable()
+    {
+        return $this->morphTo();
+    }
+}
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Agency extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'country_id',
+        'region_id',
+        'city_id',
+        'name',
+        'tagline',
+        'type',
+        'established',
+        'location',
+        'address',
+        'rating',
+        'reviews_count',
+        'tours_completed',
+        'phone',
+        'email',
+        'website',
+        'description',
+        'license_number',
+        'verified',
+        'status',
+        'logo',
+        'cover_image',
+    ];
+
+    protected $casts = [
+        'rating' => 'decimal:2',
+        'verified' => 'boolean',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    public function languages()
+    {
+        return $this->hasMany(AgencyLanguage::class);
+    }
+
+    public function specializations()
+    {
+        return $this->hasMany(AgencySpecialization::class);
+    }
+
+    public function socialAccounts()
+    {
+        return $this->hasMany(AgencySocialAccount::class);
+    }
+
+    public function teamMembers()
+    {
+        return $this->hasMany(AgencyTeamMember::class);
+    }
+
+    public function tourPackages()
+    {
+        return $this->hasMany(TourPackage::class);
+    }
+
+    public function bookings()
+    {
+        return $this->morphMany(Booking::class, 'bookable');
+    }
+
+    public function reviews()
+    {
+        return $this->morphMany(Review::class, 'reviewable');
+    }
+
+    public function favorites()
+    {
+        return $this->morphMany(Favorite::class, 'favoritable');
+    }
+
+    public function galleryImages()
+    {
+        return $this->morphMany(GalleryImage::class, 'imageable');
+    }
+
+    public function availability()
+    {
+        return $this->morphMany(Availability::class, 'available');
+    }
+
+    public function profileBoosts()
+    {
+        return $this->morphMany(ProfileBoost::class, 'boostable');
+    }
+
+    public function contactViews()
+    {
+        return $this->morphMany(ContactView::class, 'viewable');
+    }
+
+    public function activityLogs()
+    {
+        return $this->morphMany(ActivityLog::class, 'loggable');
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class AgencyLanguage extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'agency_id',
+        'language_id',
+    ];
+
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
+    }
+
+    public function language()
+    {
+        return $this->belongsTo(Language::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class AgencySocialAccount extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'agency_id',
+        'social_type_id',
+        'url',
+        'order_no',
+    ];
+
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
+    }
+
+    public function socialType()
+    {
+        return $this->belongsTo(SocialType::class);
+    }
+}
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class AgencySpecialization extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'agency_id',
+        'specialization_id',
+    ];
+
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
+    }
+
+    public function specialization()
+    {
+        return $this->belongsTo(Specialization::class);
+    }
+}
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class AgencyTeamMember extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'agency_id',
+        'name',
+        'role',
+        'avatar',
+        'bio',
+    ];
+
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
+    }
+}
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Availability extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'available_type',
+        'available_id',
+        'date',
+        'status',
+        'slots_total',
+        'slots_booked',
+    ];
+
+    protected $casts = [
+        'date' => 'date',
+    ];
+
+    public function available()
+    {
+        return $this->morphTo();
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Booking extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'bookable_type',
+        'bookable_id',
+        'tour_date',
+        'start_time',
+        'duration',
+        'num_people',
+        'service_type',
+        'special_requests',
+        'total_price',
+        'status',
+        'payment_status',
+    ];
+
+    protected $casts = [
+        'tour_date' => 'date',
+        'total_price' => 'decimal:2',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function bookable()
+    {
+        return $this->morphTo();
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+}
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class BoostFeature extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'boost_plan_id',
+        'feature',
+    ];
+
+    public function boostPlan()
+    {
+        return $this->belongsTo(BoostPlan::class);
+    }
+}
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class BoostPlan extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'type',
+        'price',
+        'currency',
+        'duration_days',
+        'position_priority',
+        'features',
+        'is_active',
+        'order',
+    ];
+
+    protected $casts = [
+        'price' => 'decimal:2',
+        'is_active' => 'boolean',
+    ];
+
+    public function profileBoosts()
+    {
+        return $this->hasMany(ProfileBoost::class);
+    }
+
+    public function features()
+    {
+        return $this->hasMany(BoostFeature::class);
+    }
+}
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class City extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'region_id',
+        'country_id',
+        'name',
+        'code',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function guides()
+    {
+        return $this->hasMany(Guide::class);
+    }
+
+    public function agencies()
+    {
+        return $this->hasMany(Agency::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ContactMessage extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'email',
+        'phone',
+        'subject',
+        'message',
+        'status',
+    ];
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ContactView extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'user_subscription_id',
+        'viewable_type',
+        'viewable_id',
+        'viewed_at',
+    ];
+
+    protected $casts = [
+        'viewed_at' => 'datetime',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function userSubscription()
+    {
+        return $this->belongsTo(UserSubscription::class);
+    }
+
+    public function viewable()
+    {
+        return $this->morphTo();
+    }
+}
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Country extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'code',
+        'flag',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
+    public function regions()
+    {
+        return $this->hasMany(Region::class);
+    }
+
+    public function cities()
+    {
+        return $this->hasMany(City::class);
+    }
+
+    public function guides()
+    {
+        return $this->hasMany(Guide::class);
+    }
+
+    public function agencies()
+    {
+        return $this->hasMany(Agency::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Coupon extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'code',
+        'type',
+        'value',
+        'applicable_to',
+        'minimum_purchase',
+        'usage_limit',
+        'used_count',
+        'starts_at',
+        'expires_at',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'value' => 'decimal:2',
+        'minimum_purchase' => 'decimal:2',
+        'starts_at' => 'datetime',
+        'expires_at' => 'datetime',
+        'is_active' => 'boolean',
+    ];
+
+    public function usages()
+    {
+        return $this->hasMany(CouponUsage::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class CouponUsage extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'coupon_id',
+        'user_id',
+        'payment_id',
+        'discount_amount',
+        'used_at',
+    ];
+
+    protected $casts = [
+        'discount_amount' => 'decimal:2',
+        'used_at' => 'datetime',
+    ];
+
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class CourseCertificate extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'course_enrollment_id',
+        'user_id',
+        'training_course_id',
+        'certificate_number',
+        'certificate_name',
+        'issued_at',
+        'expires_at',
+        'certificate_file',
+        'verification_code',
+    ];
+
+    protected $casts = [
+        'issued_at' => 'datetime',
+        'expires_at' => 'datetime',
+    ];
+
+    public function courseEnrollment()
+    {
+        return $this->belongsTo(CourseEnrollment::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function trainingCourse()
+    {
+        return $this->belongsTo(TrainingCourse::class);
+    }
+}
+
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class CourseEnrollment extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'training_course_id',
+        'payment_id',
+        'enrolled_at',
+        'started_at',
+        'completed_at',
+        'progress_percentage',
+        'status',
+        'certificate_issued',
+        'certificate_number',
+        'certificate_issued_at',
+    ];
+
+    protected $casts = [
+        'enrolled_at' => 'datetime',
+        'started_at' => 'datetime',
+        'completed_at' => 'datetime',
+        'certificate_issued' => 'boolean',
+        'certificate_issued_at' => 'datetime',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function trainingCourse()
+    {
+        return $this->belongsTo(TrainingCourse::class);
+    }
+
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
+    }
+
+    public function lessonProgress()
+    {
+        return $this->hasMany(LessonProgress::class);
+    }
+
+    public function certificate()
+    {
+        return $this->hasOne(CourseCertificate::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class CourseLesson extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'course_module_id',
+        'title',
+        'description',
+        'content',
+        'video_url',
+        'attachments',
+        'order',
+        'duration_minutes',
+        'is_free',
+    ];
+
+    protected $casts = [
+        'is_free' => 'boolean',
+    ];
+
+    public function courseModule()
+    {
+        return $this->belongsTo(CourseModule::class);
+    }
+
+    public function lessonProgress()
+    {
+        return $this->hasMany(LessonProgress::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class CourseModule extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'training_course_id',
+        'title',
+        'description',
+        'order',
+        'duration_minutes',
+    ];
+
+    public function trainingCourse()
+    {
+        return $this->belongsTo(TrainingCourse::class);
+    }
+
+    public function lessons()
+    {
+        return $this->hasMany(CourseLesson::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class CourseReview extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'training_course_id',
+        'course_enrollment_id',
+        'rating',
+        'review',
+        'helpful_count',
+        'status',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function trainingCourse()
+    {
+        return $this->belongsTo(TrainingCourse::class);
+    }
+
+    public function courseEnrollment()
+    {
+        return $this->belongsTo(CourseEnrollment::class);
+    }
+}
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Currency extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'code',
+        'symbol',
+        'exchange_rate',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'exchange_rate' => 'decimal:4',
+        'is_active' => 'boolean',
+    ];
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Destination extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'tagline',
+        'description',
+        'image',
+        'guides_count',
+        'tours_count',
+        'featured',
+        'order',
+    ];
+
+    protected $casts = [
+        'featured' => 'boolean',
+    ];
+
+    public function highlights()
+    {
+        return $this->hasMany(DestinationHighlight::class);
+    }
+}
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class DestinationHighlight extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'destination_id',
+        'highlight',
+    ];
+
+    public function destination()
+    {
+        return $this->belongsTo(Destination::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Favorite extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'favoritable_type',
+        'favoritable_id',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function favoritable()
+    {
+        return $this->morphTo();
+    }
+}
+
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class GalleryImage extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'imageable_type',
+        'imageable_id',
+        'image_path',
+        'title',
+        'order',
+    ];
+
+    public function imageable()
+    {
+        return $this->morphTo();
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Guide extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'country_id',
+        'region_id',
+        'city_id',
+        'title',
+        'tagline',
+        'location',
+        'address',
+        'rating',
+        'reviews_count',
+        'tours_completed',
+        'experience_years',
+        'hourly_rate',
+        'daily_rate',
+        'description',
+        'license_number',
+        'verified',
+        'available',
+        'status',
+        'cover_image',
+    ];
+
+    protected $casts = [
+        'rating' => 'decimal:2',
+        'hourly_rate' => 'decimal:2',
+        'daily_rate' => 'decimal:2',
+        'verified' => 'boolean',
+        'available' => 'boolean',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    public function languages()
+    {
+        return $this->hasMany(GuideLanguage::class);
+    }
+
+    public function specializations()
+    {
+        return $this->hasMany(GuideSpecialization::class);
+    }
+
+    public function certifications()
+    {
+        return $this->hasMany(GuideCertification::class);
+    }
+
+    public function socialAccounts()
+    {
+        return $this->hasMany(GuideSocialAccount::class);
+    }
+
+    public function bookings()
+    {
+        return $this->morphMany(Booking::class, 'bookable');
+    }
+
+    public function reviews()
+    {
+        return $this->morphMany(Review::class, 'reviewable');
+    }
+
+    public function favorites()
+    {
+        return $this->morphMany(Favorite::class, 'favoritable');
+    }
+
+    public function galleryImages()
+    {
+        return $this->morphMany(GalleryImage::class, 'imageable');
+    }
+
+    public function itineraries()
+    {
+        return $this->hasMany(Itinerary::class);
+    }
+
+    public function availability()
+    {
+        return $this->morphMany(Availability::class, 'available');
+    }
+
+    public function profileBoosts()
+    {
+        return $this->morphMany(ProfileBoost::class, 'boostable');
+    }
+
+    public function contactViews()
+    {
+        return $this->morphMany(ContactView::class, 'viewable');
+    }
+
+    public function activityLogs()
+    {
+        return $this->morphMany(ActivityLog::class, 'loggable');
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class GuideCertification extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'guide_id',
+        'certification_name',
+        'certification_date',
+        'expiry_date',
+        'file',
+        'status',
+    ];
+
+    protected $casts = [
+        'certification_date' => 'date',
+        'expiry_date' => 'date',
+    ];
+
+    public function guide()
+    {
+        return $this->belongsTo(Guide::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class GuideLanguage extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'guide_id',
+        'language_id',
+    ];
+
+    public function guide()
+    {
+        return $this->belongsTo(Guide::class);
+    }
+
+    public function language()
+    {
+        return $this->belongsTo(Language::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class GuideSocialAccount extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'guide_id',
+        'social_type_id',
+        'url',
+        'order_no',
+    ];
+
+    public function guide()
+    {
+        return $this->belongsTo(Guide::class);
+    }
+
+    public function socialType()
+    {
+        return $this->belongsTo(SocialType::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class GuideSpecialization extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'guide_id',
+        'specialization_id',
+    ];
+
+    public function guide()
+    {
+        return $this->belongsTo(Guide::class);
+    }
+
+    public function specialization()
+    {
+        return $this->belongsTo(Specialization::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Invoice extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'payment_id',
+        'invoice_number',
+        'amount',
+        'currency',
+        'tax_amount',
+        'total_amount',
+        'status',
+        'issued_at',
+        'due_at',
+        'paid_at',
+    ];
+
+    protected $casts = [
+        'amount' => 'decimal:2',
+        'tax_amount' => 'decimal:2',
+        'total_amount' => 'decimal:2',
+        'issued_at' => 'datetime',
+        'due_at' => 'datetime',
+        'paid_at' => 'datetime',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Itinerary extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'guide_id',
+        'title',
+        'duration',
+        'price',
+        'group_size',
+        'recommended_for',
+    ];
+
+    protected $casts = [
+        'price' => 'decimal:2',
+    ];
+
+    public function guide()
+    {
+        return $this->belongsTo(Guide::class);
+    }
+
+    public function stops()
+    {
+        return $this->hasMany(ItineraryStop::class);
+    }
+
+    public function includes()
+    {
+        return $this->hasMany(ItineraryInclude::class);
+    }
+}
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ItineraryInclude extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'itinerary_id',
+        'item',
+    ];
+
+    public function itinerary()
+    {
+        return $this->belongsTo(Itinerary::class);
+    }
+}
+
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ItineraryStop extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'itinerary_id',
+        'stop_name',
+        'duration',
+        'order',
+    ];
+
+    public function itinerary()
+    {
+        return $this->belongsTo(Itinerary::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Language extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'code',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
+    public function guideLanguages()
+    {
+        return $this->hasMany(GuideLanguage::class);
+    }
+
+    public function agencyLanguages()
+    {
+        return $this->hasMany(AgencyLanguage::class);
+    }
+}
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class LessonProgress extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'course_enrollment_id',
+        'course_lesson_id',
+        'status',
+        'completed_at',
+        'time_spent_minutes',
+    ];
+
+    protected $casts = [
+        'completed_at' => 'datetime',
+    ];
+
+    public function courseEnrollment()
+    {
+        return $this->belongsTo(CourseEnrollment::class);
+    }
+
+    public function courseLesson()
+    {
+        return $this->belongsTo(CourseLesson::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Message extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'sender_id',
+        'receiver_id',
+        'booking_id',
+        'message',
+        'read_at',
+    ];
+
+    protected $casts = [
+        'read_at' => 'datetime',
+    ];
+
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'sender_id');
+    }
+
+    public function receiver()
+    {
+        return $this->belongsTo(User::class, 'receiver_id');
+    }
+
+    public function booking()
+    {
+        return $this->belongsTo(Booking::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class NewsletterSubscriber extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'email',
+        'status',
+        'subscribed_at',
+        'unsubscribed_at',
+    ];
+
+    protected $casts = [
+        'subscribed_at' => 'datetime',
+        'unsubscribed_at' => 'datetime',
+    ];
+}
+
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Notification extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'type',
+        'data',
+        'read_at',
+    ];
+
+    protected $casts = [
+        'read_at' => 'datetime',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
+
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Payment extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'payable_type',
+        'payable_id',
+        'amount',
+        'currency',
+        'payment_method',
+        'transaction_id',
+        'payment_gateway',
+        'status',
+        'paid_at',
+        'refunded_at',
+        'refund_amount',
+        'refund_reason',
+        'metadata',
+    ];
+
+    protected $casts = [
+        'amount' => 'decimal:2',
+        'refund_amount' => 'decimal:2',
+        'paid_at' => 'datetime',
+        'refunded_at' => 'datetime',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function payable()
+    {
+        return $this->morphTo();
+    }
+
+    public function invoice()
+    {
+        return $this->hasOne(Invoice::class);
+    }
+
+    public function couponUsages()
+    {
+        return $this->hasMany(CouponUsage::class);
+    }
+}
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class PaymentCard extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'card_brand',
+        'card_last_four',
+        'card_token',
+        'is_default',
+        'expires_at',
+    ];
+
+    protected $casts = [
+        'is_default' => 'boolean',
+        'expires_at' => 'datetime',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ProfileBoost extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'boostable_type',
+        'boostable_id',
+        'boost_plan_id',
+        'starts_at',
+        'expires_at',
+        'status',
+        'payment_id',
+        'views_count',
+        'clicks_count',
+    ];
+
+    protected $casts = [
+        'starts_at' => 'datetime',
+        'expires_at' => 'datetime',
+    ];
+
+    public function boostable()
+    {
+        return $this->morphTo();
+    }
+
+    public function boostPlan()
+    {
+        return $this->belongsTo(BoostPlan::class);
+    }
+
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
+    }
+}
+
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Referral extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'referrer_id',
+        'referred_id',
+        'referral_code',
+        'status',
+        'reward_type',
+        'reward_value',
+        'completed_at',
+        'rewarded_at',
+    ];
+
+    protected $casts = [
+        'reward_value' => 'decimal:2',
+        'completed_at' => 'datetime',
+        'rewarded_at' => 'datetime',
+    ];
+
+    public function referrer()
+    {
+        return $this->belongsTo(User::class, 'referrer_id');
+    }
+
+    public function referred()
+    {
+        return $this->belongsTo(User::class, 'referred_id');
+    }
+}
+
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Region extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'country_id',
+        'name',
+        'code',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function cities()
+    {
+        return $this->hasMany(City::class);
+    }
+
+    public function guides()
+    {
+        return $this->hasMany(Guide::class);
+    }
+
+    public function agencies()
+    {
+        return $this->hasMany(Agency::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Review extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'reviewable_type',
+        'reviewable_id',
+        'booking_id',
+        'rating',
+        'title',
+        'review',
+        'tour_type',
+        'helpful_count',
+        'status',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function reviewable()
+    {
+        return $this->morphTo();
+    }
+
+    public function booking()
+    {
+        return $this->belongsTo(Booking::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ReviewImage::class);
+    }
+}
+
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ReviewImage extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'review_id',
+        'image_path',
+    ];
+
+    public function review()
+    {
+        return $this->belongsTo(Review::class);
+    }
+}
+
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class SiteSetting extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'key',
+        'value',
+    ];
+}
+
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class SocialType extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'icon',
+        'base_url',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
+    public function guideSocialAccounts()
+    {
+        return $this->hasMany(GuideSocialAccount::class);
+    }
+
+    public function agencySocialAccounts()
+    {
+        return $this->hasMany(AgencySocialAccount::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Specialization extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+        'icon',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
+    public function guideSpecializations()
+    {
+        return $this->hasMany(GuideSpecialization::class);
+    }
+
+    public function agencySpecializations()
+    {
+        return $this->hasMany(AgencySpecialization::class);
+    }
+}
+
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class SubscriptionFeature extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'subscription_plan_id',
+        'feature',
+    ];
+
+    public function subscriptionPlan()
+    {
+        return $this->belongsTo(SubscriptionPlan::class);
+    }
+}
+
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class SubscriptionPlan extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'type',
+        'price',
+        'currency',
+        'views_limit',
+        'duration_days',
+        'features',
+        'is_active',
+        'order',
+    ];
+
+    protected $casts = [
+        'price' => 'decimal:2',
+        'is_active' => 'boolean',
+    ];
+
+    public function subscriptions()
+    {
+        return $this->hasMany(UserSubscription::class);
+    }
+
+    public function features()
+    {
+        return $this->hasMany(SubscriptionFeature::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class TourPackage extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'agency_id',
+        'title',
+        'description',
+        'duration',
+        'price',
+        'group_size',
+        'difficulty_level',
+        'includes',
+        'excludes',
+        'itinerary',
+        'from_date',
+        'to_date',
+        'availability_dates',
+        'status',
+    ];
+
+    protected $casts = [
+        'price' => 'decimal:2',
+        'from_date' => 'date',
+        'to_date' => 'date',
+    ];
+
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class TrainingCourse extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'slug',
+        'description',
+        'category',
+        'level',
+        'duration_hours',
+        'price',
+        'currency',
+        'instructor_name',
+        'instructor_bio',
+        'image',
+        'video_url',
+        'is_active',
+        'is_certified',
+        'certificate_name',
+        'views_count',
+        'enrollments_count',
+        'rating',
+    ];
+
+    protected $casts = [
+        'price' => 'decimal:2',
+        'rating' => 'decimal:2',
+        'is_active' => 'boolean',
+        'is_certified' => 'boolean',
+    ];
+
+    public function modules()
+    {
+        return $this->hasMany(CourseModule::class);
+    }
+
+    public function enrollments()
+    {
+        return $this->hasMany(CourseEnrollment::class);
+    }
+
+    public function certificates()
+    {
+        return $this->hasMany(CourseCertificate::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(CourseReview::class);
+    }
+}
+
+
+
+<?php
+
+namespace App\Models;
+
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+
+class User extends Authenticatable
+{
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory, Notifiable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'phone',
+        'avatar',
+        'role',
+        'status',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    public function guide()
+    {
+        return $this->hasOne(Guide::class);
+    }
+
+    public function agency()
+    {
+        return $this->hasOne(Agency::class);
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(UserSubscription::class);
+    }
+
+    public function contactViews()
+    {
+        return $this->hasMany(ContactView::class);
+    }
+
+    public function courseEnrollments()
+    {
+        return $this->hasMany(CourseEnrollment::class);
+    }
+
+    public function courseCertificates()
+    {
+        return $this->hasMany(CourseCertificate::class);
+    }
+
+    public function courseReviews()
+    {
+        return $this->hasMany(CourseReview::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function paymentCards()
+    {
+        return $this->hasMany(PaymentCard::class);
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    public function achievements()
+    {
+        return $this->hasMany(UserAchievement::class);
+    }
+
+    public function referralsMade()
+    {
+        return $this->hasMany(Referral::class, 'referrer_id');
+    }
+
+    public function referralsReceived()
+    {
+        return $this->hasMany(Referral::class, 'referred_id');
+    }
+
+    public function couponUsages()
+    {
+        return $this->hasMany(CouponUsage::class);
+    }
+
+    public function activityLogs()
+    {
+        return $this->hasMany(ActivityLog::class);
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
+}
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class UserAchievement extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'achievement_id',
+        'earned_at',
+    ];
+
+    protected $casts = [
+        'earned_at' => 'datetime',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function achievement()
+    {
+        return $this->belongsTo(Achievement::class);
+    }
+}
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class UserSubscription extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'subscription_plan_id',
+        'starts_at',
+        'expires_at',
+        'views_remaining',
+        'views_used',
+        'status',
+        'payment_id',
+    ];
+
+    protected $casts = [
+        'starts_at' => 'datetime',
+        'expires_at' => 'datetime',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function subscriptionPlan()
+    {
+        return $this->belongsTo(SubscriptionPlan::class);
+    }
+
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
+    }
+
+    public function contactViews()
+    {
+        return $this->hasMany(ContactView::class);
+    }
+}
+
+
+
