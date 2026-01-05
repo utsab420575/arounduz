@@ -3,16 +3,17 @@
     <div class="container mx-auto px-4">
         <div class="mb-6 lg:mb-8">
             <h2 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Travel Agents for Uzbekistan</h2>
-            <p class="text-gray-600">Professional travel agents ready to plan your perfect journey through Uzbekistan</p>
+            <p class="text-gray-600">Professional travel agents ready to plan your perfect journey through
+                Uzbekistan</p>
         </div>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             @foreach($agents ?? [] as $agent)
-                @include('partials.agent-card', ['agent' => $agent])
+                @include('partials.frontend.agent-card', ['agent' => $agent])
             @endforeach
-            
+
             <!-- Static Demo Cards -->
-            @include('partials.agent-card', [
+            @include('partials.frontend.agent-card', [
                 'agent' => [
                     'id' => 1,
                     'name' => 'Dilnoza Azimova',
@@ -35,8 +36,8 @@
                     'favorite' => false
                 ]
             ])
-            
-            @include('partials.agent-card', [
+
+            @include('partials.frontend.agent-card', [
                 'agent' => [
                     'id' => 2,
                     'name' => 'Sardor Makhmudov',
@@ -59,8 +60,8 @@
                     'favorite' => false
                 ]
             ])
-            
-            @include('partials.agent-card', [
+
+            @include('partials.frontend.agent-card', [
                 'agent' => [
                     'id' => 3,
                     'name' => 'Lola Khamidova',
@@ -83,8 +84,8 @@
                     'favorite' => true
                 ]
             ])
-            
-            @include('partials.agent-card', [
+
+            @include('partials.frontend.agent-card', [
                 'agent' => [
                     'id' => 4,
                     'name' => 'Bekzod Ibragimov',
@@ -107,8 +108,8 @@
                     'favorite' => false
                 ]
             ])
-            
-            @include('partials.agent-card', [
+
+            @include('partials.frontend.agent-card', [
                 'agent' => [
                     'id' => 5,
                     'name' => 'Sevara Nazarova',
@@ -131,8 +132,8 @@
                     'favorite' => false
                 ]
             ])
-            
-            @include('partials.agent-card', [
+
+            @include('partials.frontend.agent-card', [
                 'agent' => [
                     'id' => 6,
                     'name' => 'Javohir Saidov',
@@ -155,8 +156,8 @@
                     'favorite' => false
                 ]
             ])
-            
-            @include('partials.agent-card', [
+
+            @include('partials.frontend.agent-card', [
                 'agent' => [
                     'id' => 7,
                     'name' => 'Madina Usmanova',
@@ -179,8 +180,8 @@
                     'favorite' => false
                 ]
             ])
-            
-            @include('partials.agent-card', [
+
+            @include('partials.frontend.agent-card', [
                 'agent' => [
                     'id' => 8,
                     'name' => 'Otabek Rasulov',

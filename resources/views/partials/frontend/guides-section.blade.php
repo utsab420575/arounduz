@@ -5,14 +5,14 @@
             <h2 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Local Guides in Uzbekistan</h2>
             <p class="text-gray-600">Connect with passionate locals who know their cities inside and out</p>
         </div>
-        
+
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
             @foreach($guides ?? [] as $guide)
-                @include('partials.guide-card', ['guide' => $guide])
+                @include('partials.frontend.guide-card', ['guide' => $guide])
             @endforeach
-            
+
             <!-- Static Demo Cards -->
-            @include('partials.guide-card', [
+            @include('partials.frontend.guide-card', [
                 'guide' => [
                     'id' => 1,
                     'name' => 'Nodira Karimova',
@@ -30,8 +30,8 @@
                     'favorite' => false
                 ]
             ])
-            
-            @include('partials.guide-card', [
+
+            @include('partials.frontend.guide-card', [
                 'guide' => [
                     'id' => 2,
                     'name' => 'Timur Yusupov',
@@ -49,8 +49,8 @@
                     'favorite' => false
                 ]
             ])
-            
-            @include('partials.guide-card', [
+
+            @include('partials.frontend.guide-card', [
                 'guide' => [
                     'id' => 3,
                     'name' => 'Gulnara Aliyeva',
@@ -68,8 +68,8 @@
                     'favorite' => true
                 ]
             ])
-            
-            @include('partials.guide-card', [
+
+            @include('partials.frontend.guide-card', [
                 'guide' => [
                     'id' => 4,
                     'name' => 'Ruslan Akhmedov',
@@ -87,8 +87,8 @@
                     'favorite' => false
                 ]
             ])
-            
-            @include('partials.guide-card', [
+
+            @include('partials.frontend.guide-card', [
                 'guide' => [
                     'id' => 5,
                     'name' => 'Zarina Ismailova',
@@ -106,8 +106,8 @@
                     'favorite' => false
                 ]
             ])
-            
-            @include('partials.guide-card', [
+
+            @include('partials.frontend.guide-card', [
                 'guide' => [
                     'id' => 6,
                     'name' => 'Aziz Sultanov',
@@ -125,8 +125,8 @@
                     'favorite' => false
                 ]
             ])
-            
-            @include('partials.guide-card', [
+
+            @include('partials.frontend.guide-card', [
                 'guide' => [
                     'id' => 7,
                     'name' => 'Kamola Rakhimova',
@@ -144,8 +144,8 @@
                     'favorite' => true
                 ]
             ])
-            
-            @include('partials.guide-card', [
+
+            @include('partials.frontend.guide-card', [
                 'guide' => [
                     'id' => 8,
                     'name' => 'Alisher Usmanov',

@@ -61,66 +61,11 @@ class Agency extends Model
 
     public function languages()
     {
-        return $this->hasMany(AgencyLanguage::class);
+        return $this->belongsToMany(Language::class, 'agency_languages');
     }
 
     public function specializations()
     {
-        return $this->hasMany(AgencySpecialization::class);
-    }
-
-    public function socialAccounts()
-    {
-        return $this->hasMany(AgencySocialAccount::class);
-    }
-
-    public function teamMembers()
-    {
-        return $this->hasMany(AgencyTeamMember::class);
-    }
-
-    public function tourPackages()
-    {
-        return $this->hasMany(TourPackage::class);
-    }
-
-    public function bookings()
-    {
-        return $this->morphMany(Booking::class, 'bookable');
-    }
-
-    public function reviews()
-    {
-        return $this->morphMany(Review::class, 'reviewable');
-    }
-
-    public function favorites()
-    {
-        return $this->morphMany(Favorite::class, 'favoritable');
-    }
-
-    public function galleryImages()
-    {
-        return $this->morphMany(GalleryImage::class, 'imageable');
-    }
-
-    public function availability()
-    {
-        return $this->morphMany(Availability::class, 'available');
-    }
-
-    public function profileBoosts()
-    {
-        return $this->morphMany(ProfileBoost::class, 'boostable');
-    }
-
-    public function contactViews()
-    {
-        return $this->morphMany(ContactView::class, 'viewable');
-    }
-
-    public function activityLogs()
-    {
-        return $this->morphMany(ActivityLog::class, 'loggable');
+        return $this->belongsToMany(Specialization::class, 'agency_specializations');
     }
 }

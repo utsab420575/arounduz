@@ -2,36 +2,25 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
         'phone',
         'avatar',
-        'role',
         'status',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
@@ -42,6 +31,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    // Relationships
     public function guide()
     {
         return $this->hasOne(Guide::class);
@@ -77,69 +67,9 @@ class User extends Authenticatable
         return $this->hasMany(Message::class, 'receiver_id');
     }
 
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class);
-    }
-
     public function subscriptions()
     {
         return $this->hasMany(UserSubscription::class);
-    }
-
-    public function contactViews()
-    {
-        return $this->hasMany(ContactView::class);
-    }
-
-    public function courseEnrollments()
-    {
-        return $this->hasMany(CourseEnrollment::class);
-    }
-
-    public function courseCertificates()
-    {
-        return $this->hasMany(CourseCertificate::class);
-    }
-
-    public function courseReviews()
-    {
-        return $this->hasMany(CourseReview::class);
-    }
-
-    public function payments()
-    {
-        return $this->hasMany(Payment::class);
-    }
-
-    public function paymentCards()
-    {
-        return $this->hasMany(PaymentCard::class);
-    }
-
-    public function invoices()
-    {
-        return $this->hasMany(Invoice::class);
-    }
-
-    public function achievements()
-    {
-        return $this->hasMany(UserAchievement::class);
-    }
-
-    public function referralsMade()
-    {
-        return $this->hasMany(Referral::class, 'referrer_id');
-    }
-
-    public function referralsReceived()
-    {
-        return $this->hasMany(Referral::class, 'referred_id');
-    }
-
-    public function couponUsages()
-    {
-        return $this->hasMany(CouponUsage::class);
     }
 
     public function activityLogs()
@@ -147,16 +77,56 @@ class User extends Authenticatable
         return $this->hasMany(ActivityLog::class);
     }
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    // Helper methods using Spatie
+    public function isAdmin()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasRole('admin');
+    }
+
+    public function isTourist()
+    {
+        return $this->hasRole('tourist');
+    }
+
+    public function isGuide()
+    {
+        return $this->hasRole('guide');
+    }
+
+    public function isAgency()
+    {
+        return $this->hasRole('agency');
+    }
+
+    public function hasCompletedProfile()
+    {
+        if ($this->hasRole('tourist')) {
+            return $this->phone !== null;
+        }
+
+        if ($this->hasRole('guide')) {
+            return $this->phone !== null && $this->guide !== null;
+        }
+
+        if ($this->hasRole('agency')) {
+            return $this->phone !== null && $this->agency !== null;
+        }
+
+        return false;
+    }
+
+    public function isActive()
+    {
+        return $this->status === 'active';
+    }
+
+    public function isSuspended()
+    {
+        return $this->status === 'suspended';
+    }
+
+    public function getRoleName()
+    {
+        return $this->roles->first()?->name ?? 'tourist';
     }
 }

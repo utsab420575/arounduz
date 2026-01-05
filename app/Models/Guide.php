@@ -33,11 +33,11 @@ class Guide extends Model
     ];
 
     protected $casts = [
-        'rating' => 'decimal:2',
-        'hourly_rate' => 'decimal:2',
-        'daily_rate' => 'decimal:2',
         'verified' => 'boolean',
         'available' => 'boolean',
+        'hourly_rate' => 'decimal:2',
+        'daily_rate' => 'decimal:2',
+        'rating' => 'decimal:2',
     ];
 
     public function user()
@@ -62,66 +62,11 @@ class Guide extends Model
 
     public function languages()
     {
-        return $this->hasMany(GuideLanguage::class);
+        return $this->belongsToMany(Language::class, 'guide_languages');
     }
 
     public function specializations()
     {
-        return $this->hasMany(GuideSpecialization::class);
-    }
-
-    public function certifications()
-    {
-        return $this->hasMany(GuideCertification::class);
-    }
-
-    public function socialAccounts()
-    {
-        return $this->hasMany(GuideSocialAccount::class);
-    }
-
-    public function bookings()
-    {
-        return $this->morphMany(Booking::class, 'bookable');
-    }
-
-    public function reviews()
-    {
-        return $this->morphMany(Review::class, 'reviewable');
-    }
-
-    public function favorites()
-    {
-        return $this->morphMany(Favorite::class, 'favoritable');
-    }
-
-    public function galleryImages()
-    {
-        return $this->morphMany(GalleryImage::class, 'imageable');
-    }
-
-    public function itineraries()
-    {
-        return $this->hasMany(Itinerary::class);
-    }
-
-    public function availability()
-    {
-        return $this->morphMany(Availability::class, 'available');
-    }
-
-    public function profileBoosts()
-    {
-        return $this->morphMany(ProfileBoost::class, 'boostable');
-    }
-
-    public function contactViews()
-    {
-        return $this->morphMany(ContactView::class, 'viewable');
-    }
-
-    public function activityLogs()
-    {
-        return $this->morphMany(ActivityLog::class, 'loggable');
+        return $this->belongsToMany(Specialization::class, 'guide_specializations');
     }
 }

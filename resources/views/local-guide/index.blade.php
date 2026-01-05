@@ -1,18 +1,19 @@
-@extends('layouts.theme')
+@extends('layouts.frontend')
 
 @section('title', $guide['name'] ?? 'Guide Details - AroundUz')
 
 @push('styles')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-<style>
-    .swiper-button-next, .swiper-button-prev {
-        color: #87CEEB;
-    }
-    .swiper-pagination-bullet-active {
-        background: #87CEEB;
-    }
-</style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <style>
+        .swiper-button-next, .swiper-button-prev {
+            color: #87CEEB;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: #87CEEB;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -54,7 +55,7 @@
 
     @include('local-guide.partials.hero', ['guide' => $guide])
     @include('local-guide.partials.navigation')
-    
+
     <div class="container mx-auto px-4 py-8">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Main Content -->
@@ -69,17 +70,17 @@
                 @include('local-guide.partials.availability', ['guide' => $guide])
                 @include('local-guide.partials.badges', ['guide' => $guide])
             </div>
-            
+
             <!-- Sidebar -->
             <div class="space-y-6">
                 @include('local-guide.partials.booking-card', ['guide' => $guide])
-                
+
             </div>
         </div>
     </div>
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 @endpush
